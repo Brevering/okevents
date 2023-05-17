@@ -1,0 +1,224 @@
+<mat-toolbar class="navigation">
+    <ng-container>
+        <input #fileUploadSimple [accept]="'.csv'" type="file" class="file-input" (change)="importDataFromCSV($event)"
+            hidden="true" />
+        <button (click)="fileUploadSimple.click()">Import from csv</button>
+    </ng-container>
+    <ng-container>
+        <input #fileUploadSimple2 [accept]="'.json'" type="file" class="file-input"
+            (change)="importDataFromJSON($event)" hidden="true" />
+        <button (click)="fileUploadSimple2.click()">Import from json</button>
+    </ng-container>
+    <ng-container>
+        <input #fileUploadSimple3 [accept]="'.ics'" type="file" class="file-input" (change)="importDataFromICS($event)"
+            hidden="true" />
+        <button (click)="fileUploadSimple3.click()">Import from calendar</button>
+    </ng-container>
+    <ng-container>
+        <button mat-raised-button color="primary" (click)="addNew()">ADD EVENT MANUALLY</button>
+    </ng-container>
+</mat-toolbar>
+<!-- <div class="container" style="width:600px">
+
+    <div class="my-3">
+        <app-upload-form></app-upload-form>
+    </div>
+
+    <div class="my-2">
+        <app-upload-list></app-upload-list>
+    </div>
+</div> -->
+
+<!-- <div *ngFor="let item of importedData">{{ item | json }}</div> -->
+<div class="mat-elevation-z8" [hidden]="!this.dataSource.data.length">
+    <mat-table [dataSource]="this.dataSource" matSort matSortActive="dtstart" matSortDirection="desc"
+        (matSortChange)="announceSortChange($event)" class="mat-table cdk-table mat-elevation-z8" [style.width.%]="100">
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? toggleAllRows() : null"
+                    [checked]="selection.hasValue() && isAllSelected()"
+                    [indeterminate]="selection.hasValue() && !isAllSelected()">
+                </mat-checkbox>
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                    [checked]="selection.isSelected(row)">
+                </mat-checkbox>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="dtstart">
+            <mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by start date"> Start date
+            </mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                <ng-container *ngIf="editedElement?.uid === item.uid; else startDate">
+                    <mat-form-field>
+                        <input matInput [ngxMatDatetimePicker]="pickerStart" [formControl]="formGroup.controls['dtstart']" (dateChange)="startDateChange($event)"
+                            [errorStateMatcher]="matcher">
+							<mat-error *ngIf="formGroup.hasError('timeMismatch')">
+                                Time Mismatch!
+                            </mat-error>
+                        <mat-datepicker-toggle [for]="$any(pickerStart)"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #pickerStart [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </ng-container>
+                <ng-template #startDate>{{item.dtstart | date:'short'}}</ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="dtend">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>End date</mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                <ng-container *ngIf="editedElement?.uid === item.uid; else endDate">
+                    <mat-form-field>
+                        <input matInput [min]="minEndDate" [ngxMatDatetimePicker]="pickerEnd" [formControl]="formGroup.controls['dtend']"
+                            [errorStateMatcher]="matcher">
+                            <mat-error *ngIf="formGroup.hasError('timeMismatch')">
+                                Time Mismatch!
+                            </mat-error>
+                        <mat-datepicker-toggle [for]="$any(pickerEnd)"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker #pickerEnd [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+                            [stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+                            [touchUi]="touchUi">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                </ng-container>
+                <ng-template #endDate>{{item.dtend | date:'short'}}</ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="location">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Location</mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                <ng-container *ngIf="editedElement?.uid === item.uid; else location">
+                    <mat-form-field>
+                        <input type="text" matInput [formControl]="formGroup.controls['location']"
+                            [errorStateMatcher]="matcher" placeholder="Event location">
+                        <mat-error *ngIf="formGroup.controls['location'].hasError('required')">
+                            Please enter a location
+                        </mat-error>
+                        <mat-error *ngIf="formGroup.controls['location'].hasError('minlength')">
+                            Location must be at least 3 characters
+                        </mat-error>
+                    </mat-form-field>
+                </ng-container>
+                <ng-template #location>{{item.location}}</ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="summary">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Summary</mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                <ng-container *ngIf="editedElement?.uid === item.uid; else summary">
+                    <mat-form-field>
+                        <textarea type="text" matInput [formControl]="formGroup.controls['summary']"
+                            [errorStateMatcher]="matcher" placeholder="Event location"></textarea>
+                        <mat-error *ngIf="formGroup.controls['summary'].hasError('required')">
+                            Please enter a summary
+                        </mat-error>
+                        <mat-error *ngIf="formGroup.controls['summary'].hasError('minlength')">
+                            Summary must be at least 3 characters
+                        </mat-error>
+                    </mat-form-field>
+                </ng-container>
+                <ng-template #summary>{{item.summary}}</ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="tickets">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Tickets</mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                <ng-container *ngIf="editedElement?.uid === item.uid; else tickets">
+                    <mat-form-field>
+                        <input type="text" matInput [formControl]="formGroup.controls['tickets']"
+                            [errorStateMatcher]="matcher" placeholder="Tickets url">
+                        <mat-error *ngIf="formGroup.controls['tickets'].hasError('pattern')">
+                            Please enter a valid URL
+                        </mat-error>
+                    </mat-form-field>
+                </ng-container>
+                <ng-template #tickets>{{item.tickets}}</ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="description">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+            <!-- <mat-cell *matCellDef="let item" [innerHTML]='item.description | stringToHtml'> </mat-cell> -->
+            <mat-cell *matCellDef="let item">
+                <ng-container *ngIf="editedElement?.uid === item.uid; else description">
+                    <!-- <mat-form-field> -->
+                    <textarea type="text" matInput [formControl]="formGroup.controls['description']"
+                        [errorStateMatcher]="matcher"></textarea>
+                    <mat-error *ngIf="formGroup.controls['description'].hasError('required')">
+                        Please enter a description
+                    </mat-error>
+                    <mat-error *ngIf="formGroup.controls['description'].hasError('minlength')">
+                        Description must be at least 3 characters
+                    </mat-error>
+                    <!-- </mat-form-field> -->
+                </ng-container>
+                <ng-template #description>
+                    <div [innerHTML]='item.description | stringToHtml'></div>
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="image">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Image</mat-header-cell>
+            <mat-cell *matCellDef="let item" [ngStyle]="{justifyContent: 'center'}">
+                <ng-container *ngIf="editedElement?.uid === item.uid; else image">
+                    <img *ngIf="item.thumb" [src]='item.thumb'>
+                    <button [ngStyle]="{position: 'absolute'}" mat-raised-button color="primary"
+                        (click)="openImageCropperDialog(item)">Change image</button>
+                    <!-- <mat-form-field>
+                        <input type="text" matInput [formControl]="formGroup.controls['thumb']"
+                            [errorStateMatcher]="matcher" placeholder={{upl.currentFileUpload?.url}}>
+                        <mat-error *ngIf="formGroup.controls['thumb'].hasError('pattern')">
+                            Please enter a valid URL
+                        </mat-error>
+                    </mat-form-field> -->
+                </ng-container>
+                <ng-template #image><img *ngIf="item.thumb" [src]='item.thumb' hidden="true"
+                        onLoad="this.hidden = false" onError="this.hidden = true" alt="event image"></ng-template>
+            </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="fullSize">
+            <mat-header-cell mat-header-cell *matHeaderCellDef>Has Image</mat-header-cell>
+            <mat-cell *matCellDef="let item">
+                <mat-checkbox [checked]="item.thumb" disabled="true">T</mat-checkbox>
+                <mat-checkbox [checked]="item.imgFullSize" disabled="true">F</mat-checkbox>
+            </mat-cell>
+
+        </ng-container>
+        <!-- Command Column -->
+        <ng-container matColumnDef="command">
+            <mat-header-cell *matHeaderCellDef> Command </mat-header-cell>
+            <mat-cell *matCellDef="let item" [ngClass]="{ 'expiredCommand': item.isExpired}">
+                <ng-container *ngIf="item.isExpired; then expired else normal">
+                </ng-container>
+                <ng-template #normal>
+                    <ng-container *ngIf="editedElement?.uid === item.uid; else edit">
+                        <button mat-raised-button color="primary" [disabled]="!this.formGroup.valid"
+                            (click)="onSave(item)">Save</button>
+                        <button mat-raised-button (click)="onCancel()">Cancel</button>
+                    </ng-container>
+                    <ng-template #edit>
+                        <button mat-raised-button color="primary" (click)="onEdit(item)">Edit</button>
+                        <button mat-raised-button (click)="onDelete(item)">Delete</button>
+                    </ng-template>
+					<mat-error *ngIf="(editedElement?.uid === item.uid) && this.formGroup && this.formGroup.hasError('timeMismatch')">
+						Time Mismatch!
+					</mat-error>
+                </ng-template>
+                <ng-template #expired>
+                    <p>Event expired more than 14 days ago</p>
+                    <button mat-raised-button color="primary" (click)="onDelete(item)">Delete</button>
+                </ng-template>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row mat-row *matRowDef="let row; columns: displayedColumns;"
+            [ngClass]="{ 'selectedfoobar': selection.isSelected(row)}" class="table-row"></mat-row>
+    </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20, 50]" showFirstLastButtons aria-label="Select page of events">
+    </mat-paginator>
+</div>
+<button mat-raised-button color="primary" [disabled]="!this.selection.selected.length" (click)="saveAllToDB()">Save all
+    selected events to DB</button>

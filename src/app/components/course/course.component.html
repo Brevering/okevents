@@ -1,0 +1,20 @@
+<mat-card class="example-card">
+    <mat-card-header>
+        <div *ngIf="imageSrc" mat-card-avatar [style.backgroundImage]="'url(' + imageSrc + ')'" [style.backgroundSize]="'cover'"></div>
+        <mat-card-title>{{title}}</mat-card-title>
+        <mat-card-subtitle>{{location}}</mat-card-subtitle>
+        <mat-card-subtitle>Starts {{startTime}}</mat-card-subtitle>
+        <mat-card-subtitle>Ends {{endTime}}</mat-card-subtitle>
+    </mat-card-header>
+    <img *ngIf="imageSrc" mat-card-image [src]="imageSrc" [alt]="imageAlt">
+    <mat-card-content>
+        <p [innerHTML]="description"></p>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="secondary">LIKE</button>
+        <a *ngIf="(tickets && !isExpired)" [href]="tickets" mat-raised-button color="primary">BUY TICKETS</a>
+        <a *ngIf="url" [href]="url" mat-raised-button color="primary">TO EVENT PAGE</a>
+    </mat-card-actions>
+    <mat-card-footer>
+    </mat-card-footer>
+</mat-card>

@@ -1,0 +1,73 @@
+<h3>Sign Up</h3>
+<form [formGroup]="userForm">
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>First Name</mat-label>
+			<input matInput placeholder="First Name" autocomplete="given-name" formControlName="firstName" />
+			<mat-error *ngIf="userForm.get('firstName')?.invalid">{{userForm.errors?.['firstName']}}</mat-error>
+		</mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Last Name</mat-label>
+			<input matInput placeholder="First Name" autocomplete="family-name" formControlName="lastName" />
+			<mat-error *ngIf="userForm.get('lastName')?.invalid">{{userForm.errors?.['lastName']}}</mat-error>
+		</mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Display Name</mat-label>
+			<input matInput placeholder="John123" formControlName="displayName" />
+			<mat-error *ngIf="userForm.get('displayName')?.invalid">{{userForm.errors?.['displayName']}}</mat-error>
+		</mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Enter your email</mat-label>
+			<input matInput placeholder="user@gmail.com" autocomplete="email" formControlName="email" />
+			<mat-error *ngIf="userForm.get('email')?.invalid">Enter a valid email address, e.g. user@gmail.com</mat-error>
+		</mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Choose a password</mat-label>
+			<input type="password" matInput placeholder="*****" formControlName="password" />
+			<mat-error *ngIf="userForm.get('password')?.invalid">{{userForm.errors?.['password']}}</mat-error>
+		</mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Confirm password</mat-label>
+			<input type="password" matInput placeholder="*****" formControlName="confirm" />
+			<mat-error *ngIf="userForm.get('confirm')?.invalid">{{userForm.errors?.['confirm']}}</mat-error>
+		</mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Date of Birth</mat-label>
+			<input matInput [matDatepicker]="picker" formControlName="dateOfBirth" />
+			<mat-hint>DD/MM/YYYY</mat-hint>
+			<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-datepicker #picker></mat-datepicker>
+		  </mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Photo // TODO file</mat-label>
+			<input matInput placeholder="Select Photo" formControlName="photoUrl" />
+			<mat-error *ngIf="userForm.get('photoUrl')?.invalid">{{userForm.errors?.['photoUrl']}}</mat-error>
+		</mat-form-field>
+	</p>
+	<div class="formGroup">
+		<button
+			[disabled]="userForm.invalid"
+			mat-raised-button
+			color="primary"
+			(click)="register()">Register</button>
+	</div>
+</form>
+<div class="redirectToLogin">
+	<span>Already have an account?<span class="redirect" routerLink="/sign-in">Log In</span></span>
+</div>
+
+<button (click)="onClick()">Update</button>

@@ -1,0 +1,34 @@
+<header>
+<!-- <span><img class="brand-logo" src="assets/images/events_logo.png" alt="OKEvents Logo"></span> -->
+<div class="logo-side" *ngIf="false">
+	<a href="/" class="logo-img">
+		<img class="logo-img-yellow" src="assets/images/logo-img-new.png" alt="Топлоцентрала">
+		<img class="logo-img-grey" src="assets/images/logo-img-grey-new.png" alt="Топлоцентрала">
+	</a>
+
+	<a href="/" class="logo-txt-side">
+		<img class="logo-txt-yellow" src="assets/images/logo-txt-new.png" alt="Топлоцентрала">
+		<img class="logo-txt-grey" src="assets/images/logo-txt-grey-new.png" alt="Топлоцентрала">
+		<p>регионален център за съвременни изкуства</p>
+	</a>
+</div>
+<mat-toolbar class="navigation">
+    <ng-container  *ngFor="let route of navigationLinks">
+        <ng-container *ngIf="showRoute(route)">
+            <button
+                mat-icon-button
+                [ngClass]="route.cssClass"
+                [routerLink]="route.url"
+                [routerLinkActive]="route.linkActive"
+                [attr.aria-label]="route.ariaLabel">
+                <mat-icon *ngIf="route.name !== 'profile' || !user?.photoURL; else photo">{{route.icon}}</mat-icon>
+                <ng-template #photo>
+                    <img class="profile-img" [src]="user?.photoURL" />
+                </ng-template>
+                <span>{{route.name === 'profile' ? user?.displayName : route.name}}</span>
+            </button>
+        </ng-container>
+    </ng-container>
+</mat-toolbar>
+</header>
+<router-outlet></router-outlet>

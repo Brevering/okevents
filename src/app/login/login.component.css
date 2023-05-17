@@ -1,0 +1,28 @@
+:host {
+	position: relative;
+	display: flex;
+	flex-flow: column;
+	justify-content: space-around;
+	align-items: stretch;
+	width: 300px;
+	max-width: 100%;
+	text-align: center;
+}
+:host .btn {
+	margin-top: 10px;
+	min-height: 48px;
+}
+:host .providers {
+	font-size: 1.5em;
+}
+
+form {
+	position: relative;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-around;
+    align-items: stretch;
+    width: 300px;
+    max-width: 100%;
+    text-align: center;
+}

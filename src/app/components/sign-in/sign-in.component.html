@@ -1,0 +1,44 @@
+<h3>Sign In</h3>
+<form [formGroup]="userForm">
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Enter your email</mat-label>
+			<input matInput placeholder="pat@example.com" formControlName="email" />
+			<mat-error *ngIf="userForm.get('email')?.invalid">Enter a valid email address, e.g. user@gmail.com</mat-error>
+		</mat-form-field>
+	</p>
+	<p>
+		<mat-form-field appearance="outline">
+			<mat-label>Enter a password</mat-label>
+			<input matInput placeholder="*****" formControlName="password" />
+			<mat-error *ngIf="userForm.get('password')?.invalid">{{userForm.errors?.['password']}}</mat-error>
+		</mat-form-field>
+	</p>
+	<div class="formGroup">
+		<button
+			[disabled]="userForm.invalid"
+			mat-raised-button
+			color="primary"
+			(click)="signIn()">Log In</button>
+	</div>
+</form>
+<span>... or</span>
+<div class="formGroup">
+	<button type="button" (click)="authWithGoogle()">
+	  <i class="fab fa-google-plus-g"></i>
+	  Log in with Google
+	</button>
+</div>
+<div class="forgotPassword">
+	<span routerLink="/forgot-password">Forgot Password?</span>
+</div>
+
+<div *ngIf="formType === 'signIn'; else login" class="redirectToLogin">
+	<span>Don't have an account?<span class="redirect" routerLink="/register-user"> Sign Up</span></span>
+</div>
+
+<ng-template #login>
+	<div class="redirectToLogin">
+		<span>Already have an account?<span class="redirect" routerLink="/sign-in">Log In</span></span>
+	</div>
+</ng-template>

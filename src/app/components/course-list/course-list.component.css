@@ -1,0 +1,88 @@
+.mat-column-summary {
+	flex-grow: 2;
+}
+
+mat-form-field {
+	width: 100%;
+}
+
+.mat-column-description.mat-cell,
+.mat-column-description.mat-header-cell {
+	max-width: 60vw;
+	max-height: 120px;
+	overflow-y: auto;
+	word-wrap: break-word;
+	flex-grow: 3;
+}
+
+.mat-column-select.mat-cell,
+.mat-column-select.mat-header-cell {
+	max-width: 5vw;
+	flex-grow: 0.2;
+}
+.mat-column-fullSize.mat-cell,
+.mat-column-fullSize.mat-header-cell {
+	max-width: 10vw;
+	flex-grow: 0.3;
+	justify-content: center;
+	display: flex;
+    flex-direction: column;
+}
+
+.mat-column-description.mat-header-cell .mat-column-command.mat-header-cell {
+	justify-content: center;
+}
+
+::ng-deep .mat-form-field-underline {
+	display: none;
+}
+
+mat-paginator {
+	display: flex;
+	justify-content: center;
+}
+
+.mat-column-description.mat-cell {
+	align-items: flex-start;
+	/* flex-direction: column; */
+}
+.mat-column-command.mat-cell.expiredCommand {
+	flex-direction: column;
+	text-align: center;
+}
+.mat-column-command {
+	flex-direction: column;
+	text-align: center;
+}
+
+.table-row {
+	height: 120px !important;
+}
+
+.mat-column-select {
+	overflow: initial;
+}
+
+.selectedfoobar {
+	background-color: #d21f18;
+}
+.navigation{
+	justify-content: flex-start;
+}
+.navigation>*{
+	margin: 0 10px;
+}
+.navigation:last-child {
+	margin-left: auto;
+  }
+.mat-column-tickets,  .mat-column-tickets input{
+	overflow-wrap: anywhere;
+	
+}
+textarea, .mat-column-tickets input {
+	background-color: grey;
+	border: 1px solid red;
+}
+textarea {
+	height: 110px !important;
+}

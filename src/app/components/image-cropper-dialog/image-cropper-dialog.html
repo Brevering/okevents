@@ -1,0 +1,90 @@
+<input type="file" (change)="fileChangeEvent($event)" />
+<br />
+<br />
+<input [(ngModel)]="imageURL" placeholder="URL to load image" type="text" />
+<br />
+<br />
+<button (click)="rotateLeft()">Rotate left</button>
+<button (click)="rotateRight()">Rotate right</button>
+<button (click)="flipHorizontal()">Flip horizontal</button>
+<button (click)="flipVertical()">Flip vertical</button>
+<br />
+<br />
+<button (click)="toggleContainWithinAspectRatio()">{{containWithinAspectRatio?'Fill Aspect Ratio':'Contain Within Aspect Ratio'}}</button>
+<button disabled="true" (click)="toggleAspectRatio()">Aspect ratio: {{aspectRatio === 4/3 ? '4/3' : '16/5'}}</button>
+<button (click)="resetImage()">Reset image</button>
+<br />
+<br />
+<input [(ngModel)]="rotation" placeholder="Rotation" type="number" (ngModelChange)="updateRotation()" /> <button (click)="zoomOut()">Zoom -</button> <button (click)="zoomIn()">Zoom +</button>
+<br />
+<br/>
+<button (click)="moveLeft()">move left</button>
+<button (click)="moveRight()">move right</button>
+
+<button (click)="moveTop()">move top</button>
+<button (click)="moveBottom()">move bottom</button>
+<br/>
+<!-- <br/>
+<button (click)="allowMoveImage = !allowMoveImage;">{{allowMoveImage ? 'Disable' : 'Enable' }} image panning</button>
+<button (click)="hidden = !hidden;">{{hidden ? 'Show' : 'Hide' }}</button>
+<br/> -->
+
+
+<div class="cropper-wrapper">
+  <image-cropper #uno id="uno"
+    [imageChangedEvent]="imageChangedEvent"
+    [imageURL]="imageURL"
+    [maintainAspectRatio]="true"
+    [containWithinAspectRatio]="containWithinAspectRatio"
+    [aspectRatio]="aspectRatio"
+    [resizeToWidth]="resizeToWidth"
+    [cropperMinWidth]="cropperMinWidth"
+    [onlyScaleDown]="true"
+    [roundCropper]="false"
+    [canvasRotation]="canvasRotation"
+    [(transform)]="transform"
+    [alignImage]="'center'"
+    [style.display]="showCropper ? null : 'none'"
+    [allowMoveImage]="allowMoveImage"
+    [hidden]="hidden"
+    backgroundColor="#393939"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (imageLoaded)="imageLoaded($event)"
+    (cropperReady)="cropperReady($event)"
+    (loadImageFailed)="loadImageFailed()"
+    [imageAltText]="'alternative image text'"
+	[autoCrop]="autocrop"
+  ></image-cropper>
+  <image-cropper #dos id="dos" *ngIf="imageBase64.length" 
+    [imageBase64]="imageBase64"
+    [maintainAspectRatio]="true"
+    [containWithinAspectRatio]="containWithinAspectRatio"
+    [aspectRatio]="aspectRatio"
+    [resizeToWidth]="168"
+    [cropperMinWidth]="168"
+    [onlyScaleDown]="false"
+    [roundCropper]="false"
+    [canvasRotation]="canvasRotation"
+    [(transform)]="transform"
+    [alignImage]="'center'"
+    [style.display]="showCropper ? null : 'none'"
+    [allowMoveImage]="allowMoveImage"
+    backgroundColor="#393939"
+    format="png"
+    (imageCropped)="imageCropped($event)"
+    (cropperReady)="cropperReady($event)"
+    (loadImageFailed)="loadImageFailed()"
+    [imageAltText]="'alternative image text'"
+	[autoCrop]="autocrop"
+  ></image-cropper>
+  <div *ngIf="loading" class="loader">Loading...</div>
+</div>
+<!-- <img [src]="croppedImage" [style.border]="croppedImage ? '1px solid red' : 'none'" /> -->
+<mat-dialog-actions>
+	<!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+	<button mat-raised-button color="primary" (click)="cropThumb()">Thumb</button>
+	<button mat-raised-button color="primary" (click)="cropFullSize()">FullSize</button>
+	<button mat-raised-button color="primary" (click)="cropBoth()" cdkFocusInitial>Both</button>
+	<button mat-raised-button color="primary" [disabled]="(!this.croppedImage['thumb'] && !this.croppedImage['imgFullSize'])" [mat-dialog-close]="{blobs: this.exportableImage, b64s: this.croppedImage}">Use image</button>
+  </mat-dialog-actions>

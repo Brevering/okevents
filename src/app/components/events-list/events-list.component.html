@@ -1,0 +1,36 @@
+<mat-form-field appearance="fill">
+	<mat-label>Filter by date</mat-label>
+	<mat-select (selectionChange)="filterByDates($event.value)">
+	  <mat-option>Show all</mat-option>
+	  <mat-option *ngFor="let date of dateFilterStrings" [value]="date.val">{{date.lbl}}</mat-option>
+	</mat-select>
+  </mat-form-field>
+<mat-grid-list [cols]="breakpoint" rowHeight="650" gutterSize="40px" (window:resize)="onResize($event)">
+    <mat-grid-tile *ngFor="let event of coursesToShow" class="peeras" (click)="openEventOnClick(event)">
+        <app-course-component 
+			[startTime]="event.dateStrings.start"
+			[endTime]="event.dateStrings.end"
+            [title]="event.summary" 
+            [location]="event.location" 
+            [imageSrc]="event.imgFullSize"
+            [imageAlt]="event.summary" 
+			[url]="event.url"
+			[tickets]="event.tickets"
+			[isExpired]="event.isExpired"
+            [description]="event.description | stringToHtml"></app-course-component>
+    </mat-grid-tile>
+</mat-grid-list>
+
+<ng-template #eventTemplate let-data>
+	<app-course-component 
+			[startTime]="data.dateStrings.start"
+			[endTime]="data.dateStrings.end"
+            [title]="data.summary" 
+            [location]="data.location" 
+            [imageSrc]="data.imgFullSize"
+            [imageAlt]="data.summary" 
+			[url]="data.url"
+			[tickets]="data.tickets"
+			[isExpired]="data.isExpired"
+            [description]="data.description | stringToHtml"></app-course-component>
+</ng-template>
