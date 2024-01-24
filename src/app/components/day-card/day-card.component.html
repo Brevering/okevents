@@ -1,0 +1,19 @@
+<div class="main-div">
+	<div class="content">
+		<div class="day-card">
+			<img *ngIf="imageName" mat-card-image [src]="imageName" [alt]="imageName">
+			<mat-card-content class="textContent">
+				<p [ngStyle]="{textAlign: 'center'}" *ngIf="(cardDrawn)" [innerText]="cardTitle"></p>
+				<p [ngStyle]="{textAlign: 'justify'}" *ngIf="(cardDrawn)" [innerText]="cardText"></p>
+			</mat-card-content>
+
+		</div>
+		
+	</div>
+	<div class="clearBtn">
+		<button *ngIf="(!cardDrawn)" mat-raised-button color="primary" (click)="drawCard()">DRAW CARD</button>
+	</div>
+	<div class="clearBtn">
+		<button *ngIf="(cardDrawn)" mat-raised-button color="warn" (click)="deleteCookies()">CLEAR</button>
+	</div>
+</div>

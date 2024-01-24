@@ -1,0 +1,20 @@
+.main-div{
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	position: absolute;
+	left: calc(50% - 100px)
+  }
+.day-card{
+	display: flex;
+    max-width: 600px;
+  }
+.textContent{
+	padding-left: 15px;
+  }
+
+  .clearBtn{
+	padding-top: 30px;
+  }

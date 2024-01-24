@@ -12,6 +12,7 @@ import { CourseListComponent } from '../components/course-list/course-list.compo
 import { AdminPanelComponent } from '../components/admin-panel/admin-panel.component';
 import { AuthGuard } from './guard/auth.guard';
 import { EventsListComponent } from '../components/events-list/events-list.component';
+import { DayCardComponent } from '../components/day-card/day-card.component';
 
 export const routes: Routes = [
     { path: 'home', component: EventsListComponent },
@@ -23,6 +24,7 @@ export const routes: Routes = [
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'verify-email-address', component: VerifyEmailComponent },
     { path: 'profile', component: ProfileComponent },
+    { path: 'card', component: DayCardComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: '**', component: NotFoundComponent }, // Wildcard route for a 404 page
 ];

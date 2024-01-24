@@ -29,7 +29,7 @@ export class EventsListComponent implements OnInit {
     @ViewChild('eventTemplate') dialogTemplate!: TemplateRef<any>;
 
     constructor(private coursesService: CoursesService, private route: ActivatedRoute, public dialog: MatDialog) {
-        moment.locale('bg')
+        moment.locale('bg');
         this.courseChangesub = this.coursesService.getCourses().subscribe((res) => {
             this.courses = JSON.parse(JSON.stringify(res));
             const timdnow = moment();

@@ -50,6 +50,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { ImageCropperDialog } from './components/image-cropper-dialog/image-cropper-dialog.component';
 import { EventsListComponent } from './components/events-list/events-list.component';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { CookieService } from 'ngx-cookie-service';
+import { DayCardComponent } from './components/day-card/day-card.component';
 
 @NgModule({
     declarations: [
@@ -70,7 +72,8 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
         UploadListComponent,
         UploadDetailsComponent,
 		ImageCropperDialog,
-  EventsListComponent
+  		EventsListComponent,
+  		DayCardComponent
     ],
     imports: [
         BrowserModule,
@@ -98,6 +101,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
         ImageCropperModule
     ],
     providers: [
+		CookieService,
         AuthService,
         CsvService,
         WindowRef,
